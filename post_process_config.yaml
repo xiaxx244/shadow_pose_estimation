@@ -1,0 +1,41 @@
+function: "get_enhanced_images" # save_detection_results
+
+
+#### save_detection results时的参数 ####
+save_detection_results_params: 
+  # 存储test_set的路径的pkl文件. 包含key为'clear_paths', 'shadow_paths'的数组对应clear_images和shadow_images的路径
+  data_path: "/home/tyf/Documents/image_enhancement/results/thesis_result/all_shadow_data_set.pkl"
+
+  # 设置为False如果data_path直接提供了clear_images和shadow_images的位置
+  rearrange_path: False 
+  # 如果rearrange_path为False，则不需要设置
+  prefix_path: "/media/tyf/software/ShadowData/"
+
+  # 保存pose_estimation_results.pkl的位置, clear的保存为clear_pose_cnt.pkl, shadow的保存为shadow_pose_cnt.pkl
+  save_path: "/home/tyf/Documents/image_enhancement/pose_results"
+
+#### get_enhanced_images以及计算metric时的参数 ####
+get_enhanced_images_params:
+  # 存储test_set的路径的pkl文件. 包含key为'clear_paths', 'shadow_paths'的数组对应clear_images和shadow_images的路径
+  data_path: "/home/tyf/Documents/image_enhancement/results/thesis_result/all_shadow_data_set.pkl"
+
+  # 测试的model类型
+  model: 'youya'
+  # 测试的model weights存储地址
+  model_weight_path: "/home/tyf/Documents/image_enhancement/results/thesis_result/0902_yifan_RDN5_3DB_hazy/weights.h5"
+
+  # 保证和save_detection_results_params.save_path一致
+  clear_data_path: "/home/tyf/Documents/image_enhancement/pose_results"
+  shadow_data_path: "/home/tyf/Documents/image_enhancement/pose_results"
+
+  # 计算的quantitative metric
+  metric: 
+    - "paf_dist"
+    - "detection_rate"
+    - "PCPm"
+    - "point_precision"
+
+  # 设置为False如果data_path直接提供了clear_images和shadow_images的位置
+  rearrange_path: False 
+  # 如果rearrange_path为False，则不需要设置
+  prefix_path: "/media/tyf/software/ShadowData/"
