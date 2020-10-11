@@ -12,7 +12,7 @@ import natsort
 from tf_pose.new_estimator import TfPoseEstimator
 from tf_pose.networks import get_graph_path, model_wh
 
-OUTPUT_DIR = 'r_far_female_filter3/'
+OUTPUT_DIR = 'l_close_male_filter1/'
 #count=0
 
 def sort_annotate_and_write(image, human_info, human_info_orig, sorted_idx,sorted_idx_orig,im_file):
@@ -29,10 +29,11 @@ def sort_annotate_and_write(image, human_info, human_info_orig, sorted_idx,sorte
     cc=0
     bc=0
     l1=[]
+    t=0
     if len(sorted_idx_orig)==0:
-        return (-1,-1)
+        return (-1,-1,-1)
     if len(sorted_idx)==0:
-        return (0,0)
+        return (0,0,0)
     #print(len(sorted_idx_or))
     for idx in sorted_idx:
         human = human_info[idx]
@@ -53,6 +54,7 @@ def sort_annotate_and_write(image, human_info, human_info_orig, sorted_idx,sorte
         for (information1,location1) in human_orig:
             if location1[0]!=-1:
                 #c=c+1
+                t=t+1
                 l2.append((information1,location1[0],location1[1]))
             else:
                 l2.append((information1,-1,-1))
@@ -68,13 +70,13 @@ def sort_annotate_and_write(image, human_info, human_info_orig, sorted_idx,sorte
     for i in range(18):
         a,b,c=l1[i]
         a1,b1,c1=l2[i]
-        if abs(b-(256/640)*b1)<=5:
+        if abs(b-b1)<=8:
             bc=bc+1
         if b!=-1 or b1==-1:
             cc=cc+1
     #print(c)
     cv2.imwrite(op_imfile.replace(op_imfile[-4:], "op.JPG"), image)
-    return (cc,bc)
+    return (cc,bc,t)
 
 
 
@@ -85,11 +87,11 @@ if __name__ == '__main__':
     parser.add_argument('--image_type', type=str, default='*.png')
     parser.add_argument('--model', type=str, default='mobilenet_thin', help='cmu / mobilenet_thin')
     args = parser.parse_args()
-    input_folder_orig= "../../../../media/bizon/Elements/shadow_test/private/r_far_female_filter3"
+    input_folder_orig= "../../../../media/bizon/Elements/shadow_test/private/l_close_male_filter1"
     path_orig = glob.glob(input_folder_orig+'/*.*')
     TEST_IMAGE_PATHS_orig = path_orig
     TEST_IMAGE_PATHS_orig=natsort.natsorted(TEST_IMAGE_PATHS_orig,reverse=False)
-    input_folder = "../image_enhancement/r_far_female_filter3"
+    input_folder = "../image_enhancement/l_close_male_filter1"
     path = glob.glob(input_folder+'/*.*')
     TEST_IMAGE_PATHS = path
     TEST_IMAGE_PATHS=natsort.natsorted(TEST_IMAGE_PATHS,reverse=False)
@@ -98,6 +100,7 @@ if __name__ == '__main__':
     e = TfPoseEstimator(get_graph_path(args.model), target_size=(432, 368))
     t = time.time()
     count=0
+    tc=0
     b_t=0
     skip=0
     length=min(len(TEST_IMAGE_PATHS),len(TEST_IMAGE_PATHS_orig))
@@ -125,13 +128,14 @@ if __name__ == '__main__':
 
         sorted_idx_orig = np.argsort(face_x_orig)
         sorted_idx = np.argsort(face_x)
-        (count_temp,b_temp)=sort_annotate_and_write(image, human_info, human_info_orig, sorted_idx, sorted_idx_orig, TEST_IMAGE_PATHS[i])
+        (count_temp,b_temp,tcc)=sort_annotate_and_write(image, human_info, human_info_orig, sorted_idx, sorted_idx_orig, TEST_IMAGE_PATHS[i])
         if count_temp==-1:
             skip=skip+1
             continue
+        tc=tc+tcc
         count=count+count_temp
         print(count_temp)
         b_t=b_t+b_temp
     print("Processing time for {0} images: {1} sec".format(len(TEST_IMAGE_PATHS), time.time() - t))
-    print(count/(18*(len(TEST_IMAGE_PATHS)-skip)))
+    print(count/tc)
     print(b_t/count)
