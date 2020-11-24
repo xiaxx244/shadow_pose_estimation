@@ -8,7 +8,8 @@ pose estimation with shadow image enhancement
 cd image_enhancement
 python3 train.py
 ```
-- run test.py py to run the inference results for image enhancement
+- put the test image path in your desired path
+- modifiy the path for test images and run test.py py to run the inference results for image enhancement
 - if you need to run pose estimation results on enhanced images, please run the command
 ```
 cd pose_estimation
