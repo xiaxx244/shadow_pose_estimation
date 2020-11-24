@@ -11,7 +11,7 @@ cd image_enhancement
 python3 train.py
 ```
 - put the test image path in your desired path
-- modifiy the path for test images and saved model in test.py
+- modifiy the path for [test images](https://github.com/xiaxx244/shadow_pose_estimation/blob/42167948f84482356bcfd1220e277f5780bb203a/image_enhancement/test.py#L128) and saved model in test.py
 - run test.py py to run the inference results for image enhancement
 - if you need to run pose estimation results on enhanced images, please run the command
 ```
