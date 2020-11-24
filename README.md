@@ -12,6 +12,7 @@ python3 train.py
 ```
 - put the test image path in your desired path
 - modifiy the path for [test images](https://github.com/xiaxx244/shadow_pose_estimation/blob/42167948f84482356bcfd1220e277f5780bb203a/image_enhancement/test.py#L128) and [saved model](https://github.com/xiaxx244/shadow_pose_estimation/blob/1a9cb1ed40397dce35a4b448411cb01638fe3470/image_enhancement/test.py#L78) in test.py
+- setup the [saved path](https://github.com/xiaxx244/shadow_pose_estimation/blob/9fd3f8b31b7212a7f5020f87ca5621058e1df8f0/image_enhancement/test.py#L145) for the enhanced images
 - run test.py py to run the inference results for image enhancement
 - if you need to run pose estimation results on enhanced images, please run the command
 ```
