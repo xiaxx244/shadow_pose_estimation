@@ -15,7 +15,7 @@ cd pose_estimation
 python3 get_pose.py
 ```
 ### System setup
-<img src="res.png" width=45% height=45%> 
+<img src="res.png" width=80% height=80%> 
 
 ### Acknowledgements
 - https://github.com/CMU-Perceptual-Computing-Lab/openpose
