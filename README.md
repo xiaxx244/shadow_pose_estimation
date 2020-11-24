@@ -15,7 +15,8 @@ cd pose_estimation
 python3 get_pose.py
 ```
 ### Image Enhancement Network Design
-<img src="pipeline.png" width=80% height=80%> 
+<img src="pipeline.png" width=50% height=50%> 
+<img src="aa.jpg" width=50% height=50%> 
 
 ### System setup
 <img src="res.png" width=80% height=80%> 
