@@ -17,7 +17,7 @@ python3 train.py
 - if you need to run pose estimation results on enhanced images, please run the command
 ```
 cd pose_estimation
-python3 get_pose.py
+python3 get_pose.py --image_dir=SAVED_ENHANCED_PATH
 ```
 ### Image Enhancement Network Design
 #### Overall arch
