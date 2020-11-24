@@ -14,6 +14,9 @@ python3 train.py
 cd pose_estimation
 python3 get_pose.py
 ```
+### Image Enhancement Network Design
+<img src="pipeline.png" width=80% height=80%> 
+
 ### System setup
 <img src="res.png" width=80% height=80%> 
 
