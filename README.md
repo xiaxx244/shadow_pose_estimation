@@ -2,7 +2,7 @@
 pose estimation with shadow image enhancement
 ### Usage
 - download the **[OTS dataset](https://sites.google.com/view/reside-dehaze-datasets/reside-%CE%B2)** and put the dataset in your desired path.
-- set up the image path in both data_load.py and train.py (specifically the im_path, img_B path in both of the two files)
+- set up the image path in both data_load.py and train.py (specifically the im_path, [img_B path](https://github.com/xiaxx244/shadow_pose_estimation/blob/7771c474cc3ce62ca5067c07dcfb73fb46509d8a/image_enhancement/train.py#L149) in both of the two files)
 - setup the [save path](https://github.com/xiaxx244/shadow_pose_estimation/blob/13996779ee5dff79e1ec4d612358442a7fd85112/image_enhancement/train.py#L139) for model
 - train image enhancement model model by running command 
 ```
