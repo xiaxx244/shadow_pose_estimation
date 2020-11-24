@@ -41,7 +41,7 @@ def sort_annotate_and_write(image, human_info, sorted_idx, im_file):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--image_dir', type=str, default='../image_enhancement/IMG_0186/')
-    parser.add_argument('--image_type', type=str, default='*.png')
+    parser.add_argument('--image_type', type=str, default='*.jpg')
     parser.add_argument('--model', type=str, default='mobilenet_thin', help='cmu / mobilenet_thin')
     args = parser.parse_args()
 
