@@ -146,7 +146,7 @@ class Show_History(keras.callbacks.Callback):
 
         for i in range(len(test_list)):
             img_A_path=test_list[i]
-            img_B = cv2.imread("../../../../media/bizon/Elements/ITS/train/ITSclear/"+img_A_path.split("_")[0].split("/")[-1]+".png")
+            img_B = cv2.imread("../../../../media/bizon/Elements/OTS/train/OTSclear/"+img_A_path.split("_")[0].split("/")[-1]+".png")
             img_A = cv2.imread(img_A_path)
             #cv2.imwrite("val_real_images/"+img_A_path.split("_")[0].split("/")[-1]+".jpg",img_B)
 
@@ -191,7 +191,7 @@ nanstop = keras.callbacks.TerminateOnNaN()
 reducelearate = keras.callbacks.ReduceLROnPlateau(monitor='loss', factor=0.8, patience=2, min_lr=1e-10)
 earlystop = keras.callbacks.EarlyStopping(monitor='loss', min_delta=3, patience=0, verbose=0, mode='min')
 
-im_path=natsort.natsorted(glob("../../../../media/bizon/Elements/ITS/train/ITShaze/*"),reverse=False)
+im_path=natsort.natsorted(glob("../../../../media/bizon/Elements/OTS/train/OTShaze/*"),reverse=False)
 train_list=im_path[:69952]
 val_list=im_path[69952:89952]
 train=data_loader.load_data(fake_list=train_list)

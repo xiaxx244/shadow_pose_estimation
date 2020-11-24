@@ -52,7 +52,7 @@ class Dataloader():
                     #print(img_A_path.split("_")[0])
 
                     #print("../segmentation/JPEGImages/"+img_A_path.split("_")[0].split("/")[-1]+".jpg")
-                    img_B = cv.imread("../../../../media/bizon/Elements/ITS/train/ITSclear/"+img_A_path.split("_")[0].split("/")[-1]+".png")
+                    img_B = cv.imread("../../../../media/bizon/Elements/OTS/train/OTSclear/"+img_A_path.split("_")[0].split("/")[-1]+".png")
                     img_A = cv.imread(img_A_path)
 
 
