@@ -15,9 +15,9 @@ cd pose_estimation
 python3 get_pose.py
 ```
 ### Image Enhancement Network Design
-## Overall arch
+#### Overall arch
 <img src="pipeline.png" width=30% height=30%> 
-## EM arch
+#### EM arch
 <img src="aa.jpg" width=50% height=50%> 
 
 ### System setup
