@@ -110,11 +110,11 @@ imh.compile(loss=losses, loss_weights=lossWeights,
                           optimizer=opt)
 
 
-
+'''
 if os.path.exists('models3/139_.h5'):
     imh.load_weights('models3/139_.h5')
     imh.summary()
-
+'''
 
 imh.summary()
 #[fake_B,fake_B2,fake_B3] = imh(img_A)
