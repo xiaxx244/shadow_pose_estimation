@@ -32,7 +32,6 @@ img_cols = 256
 img_channels = 3
 crop_shape = (img_rows, img_cols, img_channels)
 input_shape = (img_rows, img_cols, img_channels)
-image_path = 'segmentation'
 data_loader = Dataloader(dataset_name=image_path, crop_shape=(img_rows, img_cols))
 resnet50 = Network.build_resnet50(crop_shape)
 resnet50.trainable = False
@@ -42,29 +41,14 @@ def my_loss(y_true, y_pred):
     SSIM_loss = utls.tf_ssim(tf.expand_dims(y_pred[:, :, :, 0], -1),tf.expand_dims(y_true[:, :, :, 0], -1)) + utls.tf_ssim(
         tf.expand_dims(y_pred[:, :, :, 1], -1), tf.expand_dims(y_true[:, :, :, 1], -1)) + utls.tf_ssim(
         tf.expand_dims(y_pred[:, :, :, 2], -1), tf.expand_dims(y_true[:, :, :, 2], -1))
-    psnr=tf.clip_by_norm(tf.image.psnr(y_pred[:,:,:,:3], y_true,max_val=1.0),1)
-    return  3-SSIM_loss+3*MSE_loss+1-psnr
+    #psnr=tf.clip_by_norm(tf.image.psnr(y_pred[:,:,:,:3], y_true,max_val=1.0),1)
+    return  3-SSIM_loss+3*MSE_loss
 
 def my_loss1(y_true,y_pred):
     #distortion loss calculated using iou
     fake_features = resnet50(y_pred)
     real_features = resnet50(y_true)
     resnet_loss = 2*K.mean(K.abs(fake_features-real_features))
-    '''
-    edge_map1=tf.image.sobel_edges(y_pred[:,:,:,:3])
-    edge_map2=tf.image.sobel_edges(y_true)
-    ssim1 = K.mean(tf.image.ssim(edge_map1, edge_map2, max_val=255, filter_size=3,
-                          filter_sigma=1.5, k1=0.01, k2=0.03))
-    dist_loss=3-ssim1+K.mean(K.square(edge_map1 - edge_map2))
-    #regional_loss:
-    attention_map=y_pred[:, :, :, 35:]
-    ssim_loss2=utls.tf_ssim(tf.expand_dims(y_pred[:, :, :, 0]*attention_map[:, :, :, 1], -1),tf.expand_dims(y_true[:, :, :, 0]*attention_map[:, :, :, 1], -1)) + utls.tf_ssim(
-        tf.expand_dims(y_pred[:, :, :, 1]*attention_map[:, :, :, 1], -1), tf.expand_dims(y_true[:, :, :, 1]*attention_map[:, :, :, 1], -1)) + utls.tf_ssim(
-        tf.expand_dims(y_pred[:, :, :, 2]*attention_map[:, :, :, 1], -1), tf.expand_dims(y_true[:, :, :, 2]*attention_map[:, :, :, 1], -1))
-    tmp=tf.expand_dims(y_pred[:, :, :, 0]*attention_map[:, :, :, 1], -1)+tf.expand_dims(y_pred[:, :, :, 1]*attention_map[:, :, :, 1], -1)+tf.expand_dims(y_pred[:, :, :, 2]*attention_map[:, :, :, 1], -1)
-    tmp2=tf.expand_dims(y_true[:, :, :, 0]*attention_map[:, :, :, 1], -1)+tf.expand_dims(y_true[:, :, :, 1]*attention_map[:, :, :, 1], -1)+tf.expand_dims(y_true[:, :, :, 2]*attention_map[:, :, :, 1], -1)
-    regional_loss=K.mean(K.abs(tmp-tmp2))+3-ssim_loss2
-    '''
     loss = my_loss(y_true,y_pred)+resnet_loss
     return loss
 
@@ -81,27 +65,7 @@ def my_loss3(y_true, y_pred):
                           filter_sigma=1.5, k1=0.01, k2=0.03))
     dist_loss=1-ssim1+K.mean(K.square(edge_map1-edge_map2))+1-tf.clip_by_norm(tf.image.psnr(y_pred[:,:,:,:3], y_true,max_val=1.0),1)
 
-    #fake_features1 = resnet50(edge_map1)
-    #real_features1 = resnet50(edge_map2)
-    #resnet_loss1 = K.mean(K.square(fake_features1-real_features1))
-    #regional_loss:
     loss = 3-SSIM_loss+MSE_loss + dist_loss
-    return loss
-
-def my_loss2(y_true, y_pred):
-    MSE_loss = K.mean(K.square(y_pred[:,:,:,:3] - y_true))
-    SSIM_loss = utls.tf_ssim(tf.expand_dims(y_pred[:, :, :, 0], -1),tf.expand_dims(y_true[:, :, :, 0], -1)) + utls.tf_ssim(
-        tf.expand_dims(y_pred[:, :, :, 1], -1), tf.expand_dims(y_true[:, :, :, 1], -1)) + utls.tf_ssim(
-        tf.expand_dims(y_pred[:, :, :, 2], -1), tf.expand_dims(y_true[:, :, :, 2], -1))
-    #distortion loss calculated using iou
-    #resnet_loss = K.mean(K.abs(y_pred[:, :, :, 3:19] - y_pred[:, :, :, 19:35]))
-    edge_map1=tf.image.sobel_edges(y_pred[:,:,:,:3])
-    edge_map2=tf.image.sobel_edges(y_true)
-    ssim1 = K.mean(tf.image.ssim(edge_map1, edge_map2, max_val=255, filter_size=3,
-                          filter_sigma=1.5, k1=0.01, k2=0.03))
-    dist_loss=1-ssim1
-    #regional_loss:
-    loss = my_loss1(y_true, y_pred)+dist_loss
     return loss
 
 if not os.path.isdir('./logs'):
@@ -176,7 +140,7 @@ class Show_History(keras.callbacks.Callback):
         imh.save_weights(modelname)
 
         # test val data
-        test_list=im_path[99952:99968]
+        test_list=im_path[89952:99968]
         number = 0
         psnr_ave = 0
 
@@ -228,8 +192,8 @@ reducelearate = keras.callbacks.ReduceLROnPlateau(monitor='loss', factor=0.8, pa
 earlystop = keras.callbacks.EarlyStopping(monitor='loss', min_delta=3, patience=0, verbose=0, mode='min')
 
 im_path=natsort.natsorted(glob("../../../../media/bizon/Elements/ITS/train/ITShaze/*"),reverse=False)
-train_list=im_path[:99904]
-val_list=im_path[99904:99952]
+train_list=im_path[:69952]
+val_list=im_path[69952:89952]
 train=data_loader.load_data(fake_list=train_list)
 val=data_loader.load_data(fake_list=val_list)
 train_batch_size = 64
@@ -237,10 +201,10 @@ val_batch_size= 16
 
 history=imh.fit_generator(
         train,
-        steps_per_epoch=99904 // train_batch_size,
+        steps_per_epoch=69952 // train_batch_size,
         epochs=200,
         validation_data=val,
-        validation_steps=48 // val_batch_size,
+        validation_steps=20000 // val_batch_size,
         callbacks=[show_history, tbCallBack,  change_lr, nanstop, reducelearate])
 
 utls.plot_history(history, './results/', 'imh')
