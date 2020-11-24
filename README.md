@@ -26,3 +26,6 @@ python3 get_pose.py
 
 ### Acknowledgements
 - https://github.com/CMU-Perceptual-Computing-Lab/openpose
+- https://github.com/xahidbuffon/tf-pose-estimation
+- https://sites.google.com/view/reside-dehaze-datasets/reside-%CE%B2
+
